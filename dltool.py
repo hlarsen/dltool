@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 #
-# This script will take "fix DATs" (DATs made up of missing ROMs) and attempt to download them from Myrient.
+# This script will take "fix DATs" (DATs made up of missing ROMs) and attempt to download the files from Myrient.
 #
 
 import argparse
-import glob
 import datetime
 import os
 import math
@@ -269,7 +268,7 @@ for dat_file_to_process in dat_files_to_process:
         if cell.a['title'] == dat_name:
             found_collections = [({'name': cell.a['title'], 'url': cell.a['href']})]
             break
-        elif cell.a['title'].includes(dat_name):
+        elif dat_name in cell.a['title']:
             found_collections.append({'name': cell.a['title'], 'url': cell.a['href']})
 
     collection = None
