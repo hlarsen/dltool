@@ -143,7 +143,7 @@ parser = argparse.ArgumentParser(
     add_help=False,
     formatter_class=argparse.RawTextHelpFormatter,
     description=textwrap.dedent('''\
-        \033[92mTool to automatically download ROMs of a DAT-file from Myrient.
+        \033[92mTool to automatically download ROMs of a DAT-file via Myrient.
         
         Generate a DAT-file with the tool of your choice to include ROMs that you
         want from a No-Intro/Redump/etc catalog, then use this tool to download
@@ -152,8 +152,8 @@ parser = argparse.ArgumentParser(
 
 # Add required arguments
 required_args = parser.add_argument_group('\033[91mRequired arguments\033[00m')
-required_args.add_argument('-i', dest='input_files', metavar='nointro.dat',
-                           help='Input DAT-file containing wanted ROMs',
+required_args.add_argument('-i', dest='input_files', metavar='*.dat',
+                           help='Input DAT-file(s) containing wanted ROMs',
                            required=True, nargs="+")
 required_args.add_argument('-o', dest='output_dir', metavar='/data/roms',
                            help='Output path for ROM files to be downloaded',

@@ -1,44 +1,44 @@
-# Tool to download contents of a DAT collection from Myrient
+# dltool: A tool to download contents of a DAT collection via Myrient
 
-![Sample](sample.png)
+`dltool` uses fixDAT-style DAT file(s) as input to pull down ROMs from Myrient via HTTPS. This allows users to more
+easily find missing ROMs when managing them via standard tools such as `ROMVault`.
 
-## Info
-${{\color{red}\Huge{\textsf{Updated to use the HTTP-server of Myrient, as their FTP-server is shutting down on 26th of May, 2024.}}}}\$
-
-First of all, <b>huge thanks</b> to the people behind Myrient for the fantastic service they're providing!
-
-With this tool it is not necessary to download terabytes worth of complete ROMsets, just to delete most of it afterwards. Instead, with this tool you can download only the ROMs in your filtered DAT-file from Myrient.
-
-Resuming downloads after an interruption should work, however this functionality isn't fully tested.
-
-I've also tested this only on Linux, but I suppose it should work on Windows also.
+![Sample](doc/sample.png)
 
 ## Requirements
+
 The script uses external Beautiful Soup, Progress Bar and Requests -libraries, which can be installed using:
-```
-pip3 install -r requirements.txt
-```
-or
-```
-python3 -m pip install -r requirements.txt
-```
+
+```pip3 install -r requirements.txt ```
 
 ## Usage
-```
-python3 dltool.py -i romset.dat -o /data/roms
-```
+
+Python:
+
+- Install dependencies: ```pip3 install -r requirements.txt```
+- Run:
+    - Via python: ```python3 dltool.py -i romset.dat -o /data/roms```
+    - Directly: ```./dltool -i romset.dat -i /roms```
+
+Docker:
+
+- Build: ```./script/build```
+- Run: ```./script/run --help```
 
 ### Arguments
+
 #### Required
-| Argument      | Definition                                                     |
-| ------------- | -------------------------------------------------------------- |
-| -i romset.dat | Input DAT-file containing wanted ROMs                          |
-| -o /path      | Output path for ROM files to be downloaded                     |
+
+| Argument      | Definition                                                               |
+|---------------|--------------------------------------------------------------------------|
+| -i romset.dat | Input DAT-file containing wanted ROMs (globs such as *.dat are accepted) |
+| -o /path      | Output path for ROM files to be downloaded                               |
 
 #### Optional
-| Argument      | Definition                                                     |
-| ------------- | -------------------------------------------------------------- |
-| -c            | Choose catalog manually, even if automatically found           |
-| -s            | Choose system collection manually, even if automatically found |
-| -l            | List only ROMs that are not found in FTP-server (if any)       |
-| -h            | Display help message                                           |
+
+| Argument | Definition                                                     |
+|----------|----------------------------------------------------------------|
+| -c       | Choose catalog manually, even if automatically found           |
+| -s       | Choose system collection manually, even if automatically found |
+| -l       | List only ROMs that are not found on the server (if any)       |
+| -h       | Display help message                                           |
