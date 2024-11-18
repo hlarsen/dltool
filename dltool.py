@@ -22,7 +22,8 @@ RomMeta = TypedDict('RomMeta', {'name': str, 'file': str, 'url': str})
 # Constants
 CATALOG_URLS = {
     'https://www.no-intro.org': 'No-Intro',
-    'https://redump.org/': 'Redump'
+    # NOTE: redump DATs use HTTP
+    'http://redump.org': 'Redump',
 }
 CHUNK_SIZE = 8192
 DAT_NAME_FIXES = [
@@ -91,9 +92,6 @@ def download(output_path: str, file_to_dl: RomMeta, file_index: int, total_downl
             resume_dl = True
         else:
             proceed_dl = False
-
-    else:
-        raise "Could not get local path"
 
     if proceed_dl:
         file = open(local_path, 'ab')
@@ -193,6 +191,7 @@ for dat_file_to_process in dat_files_to_process:
     # Loop through ROMs in input DAT-file
     dat_name = None
     catalog = None
+    catalog_url = None
     wanted_roms = []
     for dat_child in dat_root:
         # DAT file header
@@ -204,11 +203,6 @@ for dat_file_to_process in dat_files_to_process:
                 dat_name = dat_name.replace(fix, '')
 
             catalog_url = dat_child.find('url').text
-            if catalog_url in CATALOG_URLS:
-                catalog = CATALOG_URLS[catalog_url]
-                logger(f'Processing {catalog}: {dat_name}...', 'green')
-            else:
-                logger(f'Processing {dat_name}...', 'green')
         # DAT file game entry
         elif dat_child.tag == 'game':
             filename = dat_child.attrib['name']
@@ -221,6 +215,19 @@ for dat_file_to_process in dat_files_to_process:
 
     if dat_name is None:
         raise f"No DAT Name found for file {dat_file_to_process}"
+
+    if catalog_url is None:
+        raise f"No catalog name parsed from {dat_file_to_process}"
+
+    if catalog_url in CATALOG_URLS:
+        catalog = CATALOG_URLS[catalog_url]
+        logger(f'Processing {catalog}: {dat_name}...', 'green')
+    else:
+        logger(f'Processing {dat_name}...', 'green')
+
+    if catalog is None:
+        print(f"No Myrient directory found for {catalog_url}")
+        continue
 
     # Get HTTP base and select wanted catalog
     catalog_url = None
